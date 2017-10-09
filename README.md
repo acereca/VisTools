@@ -15,3 +15,5 @@ as well as exporting Data for use in LaTex-Documents
 * MatplotLib
 * Pandas
 * Uncertainties
+* NumPy
+* SciPy
