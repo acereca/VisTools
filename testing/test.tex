@@ -1,0 +1,19 @@
+\documentclass[a4paper]{scrartcl}
+
+\usepackage{xstring}
+\usepackage{siunitx}
+\sisetup{seperr}
+\sisetup{expproduct=\cdot,per=frac,fraction=nice}
+
+\newcommand{\val}[1]{%
+  \IfEqCase{#1}{%
+    {1}{$\lambda_\mu$ = \SI{9+-3.1}{px}}
+    {2}{hallo}
+  }[\PackageError{unc_tolatex}{undefinded value: #1}{}]%
+}
+
+
+\begin{document}
+  edf
+  \val1
+\end{document}

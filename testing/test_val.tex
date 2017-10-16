@@ -1,0 +1,5 @@
+\newcommand{\val}[2]{%
+	\IfEqCase{#1}{%
+		{ l_mu }{ $\lambda_\mu$ = \SI{ 9.0+-0.4 }{  }}
+	}[\PackageError{unc_tolatex}{undefinded value: #1}{}]%
+}
