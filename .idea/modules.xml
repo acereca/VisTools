@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../FP/F83 - Koinzidenzspektrometer/.idea/F83 - Koinzidenzspektrometer.iml" filepath="$PROJECT_DIR$/../FP/F83 - Koinzidenzspektrometer/.idea/F83 - Koinzidenzspektrometer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/VisTools.iml" filepath="$PROJECT_DIR$/.idea/VisTools.iml" />
     </modules>
   </component>

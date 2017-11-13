@@ -4,7 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.optimize as opt
-from typing import List, Callable, Union
+from typing import List, Callable, Union, Iterable
 
 
 def annotate_val(
@@ -13,7 +13,8 @@ def annotate_val(
         error: float,
         trailing = 3,
         name = "",
-        data_pos = (0,0)
+        data_pos = (0,0),
+        formatting = "e"
     ):
 
     """
@@ -25,11 +26,12 @@ def annotate_val(
         name = name + " = "
 
     fig.annotate(
-        '${}{:.{trailing}e}\pm{:.{trailing}e}$'.format(
+        '${}{:.{trailing}{format}}\pm{:.{trailing}{format}}$'.format(
             name,
             value,
             error,
-            trailing=trailing
+            trailing=trailing,
+            format=formatting
         ),
         xy=data_pos,
         xycoords='data',
@@ -46,7 +48,8 @@ def annotate_unc(
         value: unc.core.Variable,
         trailing=3,
         name="",
-        data_pos=(0, 0)
+        data_pos=(0, 0),
+        formatting = "e"
     ):
 
     """
@@ -58,7 +61,12 @@ def annotate_unc(
         name = name + " = "
 
     fig.annotate(
-        '${}{:.{trailing}eL}$'.format(name, value, trailing=trailing),
+        '${}{:.{trailing}{format}L}$'.format(
+            name,
+            value,
+            trailing=trailing,
+            format=formatting
+        ),
         xy=data_pos,
         xycoords='data',
         xytext=(0, 0),
@@ -85,7 +93,7 @@ def annotate(fig: mpl.figure.Figure, value: str, data_pos=(0, 0)):
     )
 
 
-def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex], sigma) -> List[unc.core.Variable]:
+def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex], sigma=None) -> List[unc.core.Variable]:
 
     """
         Take a set of data points and fit the fitfunc to these points
@@ -112,6 +120,26 @@ def fit_linear(data_x, data_y, p0, sigma) -> List[unc.core.Variable]:
 
     return fit(data_x, data_y, ffunc, p0, sigma)
 
+
+def fit_polynomial(
+        data_x: Union[np.ndarray, Iterable],
+        data_y: Union[np.ndarray, Iterable],
+        deg: int,
+        residuals=False
+) -> List[unc.core.Variable]:
+
+    """
+        Take a set of data points and fit these points with a polynomial of a given degree
+        :return: polynomial coefficients in order of highest to lowest degree
+    """
+    pcoef, pcov = np.polyfit(data_x, data_y, deg, full = residuals, cov=(not residuals))
+
+    if not residuals:
+        print()
+    else:
+        print()
+
+    return unp.uarray(pcoef, np.sqrt(np.diag(pcov)).tolist())
 
 if __name__ == "__main__":
 
