@@ -14,7 +14,8 @@ def annotate_val(
         trailing = 3,
         name = "",
         data_pos = (0,0),
-        formatting = "e"
+        formatting = "e",
+        unit = ""
     ):
 
     """
@@ -24,14 +25,17 @@ def annotate_val(
 
     if name != "":
         name = name + " = "
+    if unit != "":
+        unit = " $" + unit + "$"
 
     fig.annotate(
-        '${}{:.{trailing}{format}}\pm{:.{trailing}{format}}$'.format(
+        '${}{:.{trailing}{format}}\pm{:.{trailing}{format}}${unit}'.format(
             name,
             value,
             error,
             trailing=trailing,
-            format=formatting
+            format=formatting,
+            unit=unit
         ),
         xy=data_pos,
         xycoords='data',
@@ -49,7 +53,8 @@ def annotate_unc(
         trailing=3,
         name="",
         data_pos=(0, 0),
-        formatting = "e"
+        formatting = "e",
+        unit = ""
     ):
 
     """
@@ -59,13 +64,16 @@ def annotate_unc(
 
     if name != "":
         name = name + " = "
+    if unit != "":
+        unit = " $" + unit + "$"
 
     fig.annotate(
-        '${}{:.{trailing}{format}L}$'.format(
+        '${}{:.{trailing}{format}L}${unit}'.format(
             name,
             value,
             trailing=trailing,
-            format=formatting
+            format=formatting,
+            unit=unit
         ),
         xy=data_pos,
         xycoords='data',
