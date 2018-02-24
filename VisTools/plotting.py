@@ -124,7 +124,7 @@ def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex
     return unp.uarray(pfinal, np.sqrt(np.diag(pcov)).tolist())
 
 
-def fit_linear(data_x, data_y, p0, sigma, fitlabel) -> List[unc.core.Variable]:
+def fit_linear(data_x, data_y, p0, sigma, fitlabel='linear fit') -> List[unc.core.Variable]:
 
     """
         Take a set of data points and fit these points with a linear function
