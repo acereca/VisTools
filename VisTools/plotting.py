@@ -117,7 +117,7 @@ def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex
 
     plt.plot(
         data_x,
-        fitfunc(data_x, pfinal*),
+        fitfunc(data_x, *pfinal),
         label=fitlabel
     )
 
