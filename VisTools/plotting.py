@@ -115,9 +115,10 @@ def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex
         sigma=sigma
     )
 
+    xdata_gen = np.arange(np.min(data_x), np.max(data_x), 101)
     plt.plot(
-        data_x,
-        fitfunc(data_x, *pfinal),
+        xdata_gen,
+        fitfunc(xdata_gen, *pfinal),
         label=fitlabel
     )
 
