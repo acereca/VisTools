@@ -154,6 +154,30 @@ def fit_linear(
 
     return fit(data_x, data_y, ffunc, p0, sigma, fitlabel, fig, c)
 
+def lm_plot(
+    data: pd.DataFrame, 
+    x: str, 
+    y: str, 
+    xerr: str, 
+    yerr: str,
+    fitlabel: str,
+    fig = plt,
+    color = None
+) -> List[unc.core.Variable]:
+
+    """
+        Takes set of data points, plots them and does a fit_linear() call using it
+    """
+
+    return fit_linear(
+        data[x], 
+        data[y],
+        (0, 0),
+        1/data[xerr]/data[yerr],
+        fitlabel,
+        fig,
+        color
+    )
 
 def fit_polynomial(
         data_x: Union[np.ndarray, Iterable],
