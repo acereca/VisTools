@@ -101,7 +101,16 @@ def annotate(fig: mpl.figure.Figure, value: str, data_pos=(0, 0)):
     )
 
 
-def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex], sigma=None, fitlabel='fitted', fig=plt) -> List[unc.core.Variable]:
+def fit(
+    data_x, 
+    data_y, 
+    fitfunc: Callable, 
+    init: Union[None, int, float, complex], 
+    sigma=None, 
+    fitlabel='fitted', 
+    fig=plt,
+    c=None
+) -> List[unc.core.Variable]:
 
     """
         Take a set of data points and fit the fitfunc to these points
@@ -119,13 +128,22 @@ def fit(data_x, data_y, fitfunc: Callable, init: Union[None, int, float, complex
     fig.plot(
         xdata_gen,
         fitfunc(xdata_gen, *pfinal),
-        label=fitlabel
+        label=fitlabel,
+        color = c if c!=None else None
     )
 
     return unp.uarray(pfinal, np.sqrt(np.diag(pcov)).tolist())
 
 
-def fit_linear(data_x, data_y, p0, sigma=None, fitlabel='linear fit', fig=plt) -> List[unc.core.Variable]:
+def fit_linear(
+    data_x, 
+    data_y, 
+    p0, 
+    sigma=None, 
+    fitlabel='linear fit', 
+    fig=plt,
+    c=None
+) -> List[unc.core.Variable]:
 
     """
         Take a set of data points and fit these points with a linear function
