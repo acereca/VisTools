@@ -129,7 +129,7 @@ def fit(
         xdata_gen,
         fitfunc(xdata_gen, *pfinal),
         label=fitlabel,
-        color = c if c!=None else None
+        color = c
     )
 
     return unp.uarray(pfinal, np.sqrt(np.diag(pcov)).tolist())
