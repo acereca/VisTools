@@ -129,7 +129,8 @@ def fit(
         xdata_gen,
         fitfunc(xdata_gen, *pfinal),
         label=fitlabel,
-        color = c
+        color = c,
+        antialiased=True
     )
 
     return unp.uarray(pfinal, np.sqrt(np.diag(pcov)).tolist())
