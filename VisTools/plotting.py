@@ -151,7 +151,7 @@ def fit_linear(
 
     ffunc = lambda x, m, c: x*m+c
 
-    return fit(data_x, data_y, ffunc, p0, sigma, fitlabel, fig)
+    return fit(data_x, data_y, ffunc, p0, sigma, fitlabel, fig, c)
 
 
 def fit_polynomial(
