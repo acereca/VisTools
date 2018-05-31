@@ -169,7 +169,7 @@ def lm_plot(
         Takes set of data points, plots them and does a fit_linear() call using it
     """
 
-    return fit_linear(
+    ret = fit_linear(
         data[x], 
         data[y],
         (0, 0),
@@ -178,6 +178,17 @@ def lm_plot(
         fig,
         color
     )
+
+    fig.fill_between(
+        data[x], 
+        ret[0].n*data[x] + ret[0].s, 
+        ret[0].n*data[x] + ret[0].s, 
+        color = color, 
+        alpha = 0.4, 
+        label = '95% CI'
+    )
+
+    return ret
 
 def fit_polynomial(
         data_x: Union[np.ndarray, Iterable],
