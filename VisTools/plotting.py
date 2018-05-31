@@ -122,7 +122,8 @@ def fit(
         data_x,
         data_y,
         p0=init,
-        sigma=sigma
+        sigma=sigma,
+        absolute_sigma = True
     )
 
     xdata_gen = np.linspace(np.min(data_x), np.max(data_x), 101)
@@ -183,7 +184,7 @@ def lm_plot(
     fig.fill_between(
         data[x], 
         ret[0].n*data[x] + ret[0].s, 
-        ret[0].n*data[x] + ret[0].s, 
+        ret[0].n*data[x] - ret[0].s, 
         color = color, 
         alpha = 0.4, 
         label = '95% CI'
