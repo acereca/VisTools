@@ -175,7 +175,7 @@ def lm_plot(
         data[x], 
         data[y],
         (0, 0),
-        1/data[xerr]/data[yerr],
+        np.sqrt(data[xerr]**2 + data[yerr]**),
         fitlabel,
         fig,
         color
