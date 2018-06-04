@@ -123,14 +123,14 @@ def fit(
         data_y,
         p0=init,
         sigma=sigma,
-        absolute_sigma = True
+        #absolute_sigma = True
     )
 
     xdata_gen = np.linspace(np.min(data_x), np.max(data_x), 101)
     fig.plot(
         xdata_gen,
         fitfunc(xdata_gen, *pfinal),
-        label=fitlabel,
+        label=fitlabel.format(m=pfinal[0], c=pfinal[1]),
         color = c,
         antialiased=True
     )
@@ -171,11 +171,18 @@ def lm_plot(
         Takes set of data points, plots them and does a fit_linear() call using it
     """
 
+    ffunc = lambda x, m, c: x*m+c
+
+    if yerr != None:
+        sigma = data[yerr]
+    else:
+        sigma = None
+
     ret = fit_linear(
         data[x], 
         data[y],
         (0, 0),
-        np.sqrt(data[xerr]**2 + data[yerr]**),
+        sigma,
         fitlabel,
         fig,
         color
@@ -183,12 +190,14 @@ def lm_plot(
 
     fig.fill_between(
         data[x], 
-        ret[0].n*data[x] + ret[0].s, 
-        ret[0].n*data[x] - ret[0].s, 
+        ffunc(data[x], *(unp.nominal_values(ret) + unp.std_devs(ret))),
+        ffunc(data[x], *(unp.nominal_values(ret) - unp.std_devs(ret))),
         color = color, 
-        alpha = 0.4, 
-        label = '95% CI'
+        alpha = 0.2, 
+        label = None#'68% CI'
     )
+
+    print("lm fit:\n\ty = m * x + c\n\n\tm: {:.3eP}\n\tc: {:.3eP}\n".format(*ret))
 
     return ret
 
