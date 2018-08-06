@@ -9,30 +9,38 @@ def __form(x):
         return x
 
 def df_tolatex(table: pd.DataFrame, texfile: str, formatterfunc = __form):
-    """
-        takes a pandas DataFrame and creates a latex formatted table in the given file.
-        (each column is evaluated by the formatter function in series)
-        applicable inside table-environment
+    """takes a pandas DataFrame and creates a latex formatted table in the given file.
+
+    (each column is evaluated by the formatter function in series)
+    applicable inside table-environment
+
+    Args:
+        table: DataFrame
+        texfile: output File
+        formatterfunc: function to be run on all table entries
+    
+    returns:
+        Nothing
     """
 
     table.to_latex(texfile, escape=False, formatters=[formatterfunc]*len(table.columns), index = False, encoding='utf-8')
 
 
-def unc_tolatex(value: unc.core.Variable, identifier: str, texfile: str, name=''):
+def unc_tolatex(value: unc.core.Variable, identifier: str, texfile: str, name='', unit=''):
     """
         creates or appends a .tex-file creating or updating a command containing the uncertainty value
     """
 
-    general1 = "\\newcommand{\\val}[2]{%\n\t\\IfEqCase{#1}{%\n"
+    general1 = "\\newcommand{\\pyval}[2]{%\n\t\\IfEqCase{#1}{%\n"
     general2 = "\t}[\\PackageError{unc_tolatex}{undefinded value: #1}{}]%\n}"
 
     if name != '': name = name + " ="
-    newentry = "\t\t{{ {id} }}{{ {name} \\SI{{ {nom}+-{std} }}{{ {unit} }}}}\n".format(id=identifier, name=name, nom=value.n, std=value.s, unit="")
+    newentry = f"\t\t{{ {identifier} }}{{ {name} \\SI{{ {value.n}+-{value.s} }}{{ {unit} }}}}\n"
 
     new = ""
     #content = ""
 
-    with open(texfile, 'w+') as f:
+    with open(texfile, 'r') as f:
         content = f.read()
         #content = content[40:-57]
         if content != "":
