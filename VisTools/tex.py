@@ -8,6 +8,12 @@ def __form(x):
     else:
         return x
 
+__uuid = -1
+def __get_uuid():
+    global __uuid
+    __uuid += 1
+    return __uuid
+
 def df_tolatex(table: pd.DataFrame, texfile: str, formatterfunc = __form):
     """takes a pandas DataFrame and creates a latex formatted table in the given file.
 
@@ -30,23 +36,30 @@ def unc_tolatex(value: unc.core.Variable, identifier: str, texfile: str, name=''
     """
         creates or appends a .tex-file creating or updating a command containing the uncertainty value
     """
+    if identifier == None:
+        identifier = str(__get_uuid())
 
-    general1 = "\\newcommand{\\pyval}[2]{%\n\t\\IfEqCase{#1}{%\n"
-    general2 = "\t}[\\PackageError{unc_tolatex}{undefinded value: #1}{}]%\n}"
+    general1 = "\\ExplSyntaxOn\n\\newcommand{\\pyval}[1]{%\n\t\\str_case:nn{#1}{%\n"
+    general2 = "\t}\n}\n\\ExplSyntaxOff"
 
     if name != '': name = name + " ="
-    newentry = f"\t\t{{ {identifier} }}{{ {name} \\SI{{ {value.n}+-{value.s} }}{{ {unit} }}}}\n"
+    newentry = f"\t\t{{ {identifier} }}{{ {name} \\SI{{" + \
+    "{:.4f}+-{:.4f}".format(value.n, value.s) + \
+        f"}}{{ {unit} }}}}\n"
 
     new = ""
-    #content = ""
+    content = ""
 
-    with open(texfile, 'r') as f:
-        content = f.read()
-        #content = content[40:-57]
-        if content != "":
-            content = content.splitlines(1)[2:-2]
+    try:
+        with open(texfile, 'r') as f:
+            content = f.read()
+            #content = content[40:-57]
+            if content != "":
+                content = content.splitlines(1)[3:-3]
+    except FileNotFoundError as e:
+        pass
 
-    with open(texfile, 'w') as f:
+    with open(texfile, 'w+') as f:
 
         done = False
 

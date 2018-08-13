@@ -55,7 +55,9 @@ def annotate_unc(
         name="",
         data_pos=(0, 0),
         formatting = "e",
-        unit = ""
+        unit = "",
+        bbox_ec= '1',
+        **kwargs
     ):
 
     """
@@ -81,8 +83,12 @@ def annotate_unc(
         xytext=(0, 0),
         textcoords='offset points',
         fontsize=14,
-        bbox=dict(boxstyle="round",
-        fc="1")
+        bbox={
+            'boxstyle':"round",
+            'fc':"1",
+            'ec':bbox_ec
+        },
+        **kwargs
     )
 
 
@@ -109,7 +115,7 @@ def fit(
     init: Union[None, int, float, complex], 
     sigma=None, 
     fitlabel='fitted', 
-    fig=plt,
+    fig=None,
     c=None
 ) -> List[unc.core.Variable]:
 
@@ -126,14 +132,15 @@ def fit(
         #absolute_sigma = True
     )
 
-    xdata_gen = np.linspace(np.min(data_x), np.max(data_x), 101)
-    fig.plot(
-        xdata_gen,
-        fitfunc(xdata_gen, *pfinal),
-        label=fitlabel.format(m=pfinal[0], c=pfinal[1]),
-        color = c,
-        antialiased=True
-    )
+    if fig != None:
+        xdata_gen = np.linspace(np.min(data_x), np.max(data_x), 101)
+        fig.plot(
+            xdata_gen,
+            fitfunc(xdata_gen, *pfinal),
+            label=fitlabel.format(m=pfinal[0], c=pfinal[1]),
+            color = c,
+            antialiased=True
+        )
 
     return unp.uarray(pfinal, np.sqrt(np.diag(pcov)).tolist())
 
@@ -144,8 +151,9 @@ def fit_linear(
     p0, 
     sigma=None, 
     fitlabel='linear fit', 
-    fig=plt,
-    c=None
+    fig=None,
+    c=None,
+    **kwargs
 ) -> List[unc.core.Variable]:
 
     """
@@ -154,7 +162,7 @@ def fit_linear(
 
     ffunc = lambda x, m, c: x*m+c
 
-    return fit(data_x, data_y, ffunc, p0, sigma, fitlabel, fig, c)
+    return fit(data_x, data_y, ffunc, p0, sigma, fitlabel, fig, c, **kwargs)
 
 def lm_plot(
     data: pd.DataFrame, 
