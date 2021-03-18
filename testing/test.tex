@@ -5,15 +5,9 @@
 \sisetup{seperr}
 \sisetup{expproduct=\cdot,per=frac,fraction=nice}
 
-\newcommand{\val}[1]{%
-  \IfEqCase{#1}{%
-    {1}{$\lambda_\mu$ = \SI{9+-3.1}{px}}
-    {2}{hallo}
-  }[\PackageError{unc_tolatex}{undefinded value: #1}{}]%
-}
-
+\include{test_val}
 
 \begin{document}
-  edf
-  \val1
+  edf $\mu$
+  \pyval{lmu}
 \end{document}

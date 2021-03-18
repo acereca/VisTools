@@ -1,5 +1,8 @@
-\newcommand{\val}[2]{%
-	\IfEqCase{#1}{%
-		{ l_mu }{ $\lambda_\mu$ = \SI{ 9.0+-0.4 }{  }}
-	}[\PackageError{unc_tolatex}{undefinded value: #1}{}]%
+\ExplSyntaxOn
+\newcommand{\pyval}[1]{%
+	\str_case:nn{#1}{%
+		{ lmu }{ $\lambda\mu$ = \SI{9.0000+-0.5000}{  }}
+		{ lmu }{ $\lambda\mu$ = \SI{9.0000+-0.5000}{  }}
+	}
 }
+\ExplSyntaxOff
